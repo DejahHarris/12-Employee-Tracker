@@ -1,21 +1,11 @@
-const mysql = require('mysql');
-//const inquirer = require("inquirer");
-import inquirer from 'inquirer';
+const inquirer = require("inquirer");
+//import inquirer from 'inquirer';
 const table = require("console.table");
+const connection = require('./config/connection')
 
-var connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: "takecare1",
-    database: "workdb"
-});
+
 //connect to mysql server
-connection.connect(function (err) {
-    if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
-    askQuestions();
-});
+
 //questions and answers
 function askQuestions() {
     inquirer.prompt({
@@ -165,3 +155,5 @@ function updateEmployeeRole() {
     })
 
 }
+
+askQuestions()

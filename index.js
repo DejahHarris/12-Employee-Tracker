@@ -7,8 +7,8 @@ const connection = require('./config/connection')
 //connect to mysql server
 
 //questions and answers
-function askQuestions() {
-    inquirer.prompt({
+async function askQuestions() {
+    const answers = await inquirer.prompt({
         message: "what would you like to do?",
         type: "list",
         choices: [
@@ -21,38 +21,37 @@ function askQuestions() {
             "QUIT"
         ],
         name: "choice"
-    }).then(answers => {
-        console.log(answers.choice);
-        switch (answers.choice) {
-            case "view all employees":
-                viewEmployees()
-                break;
-
-            case "view all departments":
-                viewDepartments()
-                break;
-
-            case "add employee":
-                addEmployee()
-                break;
-
-            case "add department":
-                addDepartment()
-                break;
-
-            case "add role":
-                addRole()
-                break;
-
-            case "update employee role":
-                updateEmployeeRole();
-                break;
-
-            default:
-                connection.end()
-                break;
-        }
     })
+    console.log(answers.choice);
+    switch (answers.choice) {
+        case "view all employees":
+            viewEmployees()
+            break;
+
+        case "view all departments":
+            viewDepartments()
+            break;
+
+        case "add employee":
+            addEmployee()
+            break;
+
+        case "add department":
+            addDepartment()
+            break;
+
+        case "add role":
+            addRole()
+            break;
+
+        case "update employee role":
+            updateEmployeeRole();
+            break;
+
+        default:
+            connection.end()
+            break;
+    }
 }
 function viewEmployees() {
     connection.query("SELECT * FROM employee", function (err, data) {
@@ -70,27 +69,27 @@ function viewDepartments() {
 
 function addEmployee() {
     inquirer.prompt([{
-            type: "input",
-            name: "firstName",
-            message: "What is the employees first name?"
-        },
-        {
-            type: "input",
-            name: "lastName",
-            message: "What is the employees last name?"
-        },
-        {
-            type: "number",
-            name: "roleId",
-            message: "What is the employees role ID"
-        },
-        {
-            type: "number",
-            name: "managerId",
-            message: "What is the employees manager's ID?"
-        }
-    ]).then(function(res) {
-        connection.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [res.firstName, res.lastName, res.roleId, res.managerId], function(err, data) {
+        type: "input",
+        name: "firstName",
+        message: "What is the employees first name?"
+    },
+    {
+        type: "input",
+        name: "lastName",
+        message: "What is the employees last name?"
+    },
+    {
+        type: "number",
+        name: "roleId",
+        message: "What is the employees role ID"
+    },
+    {
+        type: "number",
+        name: "managerId",
+        message: "What is the employees manager's ID?"
+    }
+    ]).then(function (res) {
+        connection.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [res.firstName, res.lastName, res.roleId, res.managerId], function (err, data) {
             if (err) throw err;
             console.table("Successfully Inserted");
             askQuestions();
@@ -103,8 +102,8 @@ function addDepartment() {
         type: "input",
         name: "department",
         message: "What is the department that you want to add?"
-    }, ]).then(function(res) {
-        connection.query('INSERT INTO department (name) VALUES (?)', [res.department], function(err, data) {
+    },]).then(function (res) {
+        connection.query('INSERT INTO department (name) VALUES (?)', [res.department], function (err, data) {
             if (err) throw err;
             console.table("Successfully Inserted");
             askQuestions();

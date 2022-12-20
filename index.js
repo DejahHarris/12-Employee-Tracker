@@ -14,6 +14,7 @@ async function askQuestions() {
         choices: [
             "view all employees",
             "view all departments",
+            "view all roles",
             "add employee",
             "add department",
             "add role",
@@ -30,6 +31,9 @@ async function askQuestions() {
 
         case "view all departments":
             viewDepartments()
+            break;
+        case "view all roles":
+            viewRoles()
             break;
 
         case "add employee":
@@ -66,6 +70,13 @@ function viewDepartments() {
         askQuestions();
     })
 }
+function viewRoles() {
+    connection.query("SELECT * FROM role", function (err, data) {
+        console.table(data);
+        askQuestions();
+    })
+}
+
 
 function addEmployee() {
     inquirer.prompt([{
